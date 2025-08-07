@@ -5,9 +5,12 @@ const dotenv = require('dotenv')
 dotenv.config()
 const PORT = process.env.PORT || 3000
 const ConnectDB = require('./config/db.js')
+const router = require('./routes/index.js')
+
 
 app.use(express.json())
 app.use(cors())
+app.use('/api/v1' , router)
 
 
 
