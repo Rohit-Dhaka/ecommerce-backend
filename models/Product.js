@@ -21,6 +21,21 @@ const productSchema = new mongoose.Schema({
         type:[String],
         required:true
     },
+    size:{
+        type:String,
+        required:true,
+        enum:['s' , 'm' , 'l','xl' , '2xl']
+    },
+    category:{
+        type:String,
+        required:true,
+        enum:[ 'Men' , 'Women' ,'Kids']
+    },
+    subcategory:{
+        type:String,
+        required:true,
+        enum:['Topwear' ,'Bottomwear' ,'Winterwear']
+    },
     stock:{
         type:Number,
         required:true,
