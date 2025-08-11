@@ -9,7 +9,11 @@ const authmiddleware = async function (req,res,next){
 
     try{
         const decode = jwt.verify(token, process.env.JWT_SECRET)
-        req.user = decode;
+        const user = await User.findById(decode.id).select("-password")
+         if (!user) {
+            return res.status(401).json({ message: "User not found or has been removed" });
+        }
+        req.user = user;        
         next();
 
     }

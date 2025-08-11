@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema({
         min:0
     },
     imagesUrl:{
-        type:[String],
+        type:String,
         required:true
     },
     size:{
@@ -49,3 +49,4 @@ const productSchema = new mongoose.Schema({
 },{timestamps: true})
 
 const Product = mongoose.model("Product" , productSchema)
+module.exports = Product
