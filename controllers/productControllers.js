@@ -4,7 +4,8 @@ const fs = require("fs");
 
 async function addproduct(req, res) {
   try {
-    const { title, description, price, size, category, subcategory, stock } = req.body;        
+    const { title, description, price, size, category, subcategory, stock } =
+      req.body;
     if (
       !title ||
       !description ||
@@ -40,18 +41,23 @@ async function addproduct(req, res) {
   }
 }
 
-
-
 async function getallproduct(req, res) {
   try {
-    
-    return res.status(200).json({ message: "product get successfully" });
+    const allproduct = await Product.find();
+    if (!allproduct) {
+      return res.status(404).json({ message: "product not found" });
+    }
 
- 
+    return res
+      .status(200)
+      .json({ message: "product get successfully", allproduct });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
 
-module.exports = { addproduct  ,getallproduct};
+
+
+
+module.exports = { addproduct, getallproduct ,deleteproduct };
