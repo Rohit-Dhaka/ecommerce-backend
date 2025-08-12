@@ -58,6 +58,45 @@ async function getallproduct(req, res) {
 }
 
 
+async function deleteproduct(req, res) {
+  try {
+    const id = req.params.id;
+    const deleteproduct = await Product.findByIdAndDelete(id)
+    if(!deleteproduct){
+        return res.status(404).json({message:"product not delete"})
+    }
 
 
-module.exports = { addproduct, getallproduct ,deleteproduct };
+    return res
+      .status(200)
+      .json({ message: "product delete successfully" ,deleteproduct});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+async function getOneProduct(req, res) {
+  try {
+   
+    const id = req.params.id;
+    const oneproduct =  await Product.findById(id)
+    if(!oneproduct){
+        return res.status(200).json({message:"productes found successfully"})
+    }
+
+
+    return res
+      .status(200)
+      .json({ message: " one product get successfully" , oneproduct});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+
+module.exports = { addproduct, getallproduct ,deleteproduct ,getOneProduct };
