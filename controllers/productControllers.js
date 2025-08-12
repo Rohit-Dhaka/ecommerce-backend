@@ -98,5 +98,30 @@ async function getOneProduct(req, res) {
 
 
 
+async function productesupdate(req, res) {
+  try {
 
-module.exports = { addproduct, getallproduct ,deleteproduct ,getOneProduct };
+    const updateFields  = req.body
+    const id = req.params.id;
+
+
+      const updateproductes = await Product.findByIdAndUpdate(id, { $set: updateFields} , {new:true})
+    
+      if(!updateproductes){
+        return res.status(400).json({message:"Productes not found"})
+      }
+   
+
+
+    return res
+      .status(200)
+      .json({ message: " product update successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+module.exports = { addproduct, getallproduct ,deleteproduct ,getOneProduct ,productesupdate };

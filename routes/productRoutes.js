@@ -1,6 +1,6 @@
 const express = require('express')
 const productRoutes = express.Router()
-const {addproduct ,getallproduct ,deleteproduct ,getOneProduct} = require('../controllers/productControllers.js')
+const {addproduct ,getallproduct ,deleteproduct ,getOneProduct ,productesupdate} = require('../controllers/productControllers.js')
 const authmiddleware = require('../middleware/auth.middleware.js')
 const roleMiddleware = require('../middleware/roleMiddleware.js')
 const multer = require('multer')
@@ -12,6 +12,7 @@ productRoutes.post("/addproduct",  authmiddleware , roleMiddleware('admin') ,  u
 productRoutes.get("/getproduct",  authmiddleware , roleMiddleware('admin') ,  getallproduct)
 productRoutes.delete("/deleteproduct/:id",  authmiddleware , roleMiddleware('admin') ,  deleteproduct)
 productRoutes.get("/getOneProduct/:id",  authmiddleware , roleMiddleware('admin') ,  getOneProduct)
+productRoutes.put("/productesupdate/:id",  authmiddleware , roleMiddleware('admin') ,  productesupdate)
 
 
 module.exports = productRoutes
