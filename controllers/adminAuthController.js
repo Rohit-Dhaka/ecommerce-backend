@@ -5,10 +5,10 @@ const generateToken = require('../utils/generateToken.js');
 
 async function adminSignup(req,res){
     try{
-        const {name , email, password , role} =  req.body;
+        const {name , email, password } =  req.body;
 
 
-        if(!name || !email || !password || !role){
+        if(!name || !email || !password ){
             return res.status(400).json({message:"all filed are required"})
         }
         const isExists = await User.findOne({email})
@@ -46,7 +46,7 @@ async function adminLogin(req,res){
         if(!isPassword){
             return res.status(400).json(400).json({message:"password wrong"})
         }
-        const token = generateToken(user._id ,)
+        const token = generateToken(user._id)
         return res.status(201).json({message:"Admin login successfully" , token})
     }
     catch(error){

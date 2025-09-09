@@ -1,31 +1,17 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const paymentSchema = new mongoose.Schema({
-    productId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Product",
-         required: true
-    },
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-         required: true
-    },
-    method:{
-        type:String,
-        required:true
-    },
-    transactionId:{
-        type:String,
-        required:true
-    },
-    status:{
-        type:String,
-        required:true,
-        enum:["success","pending","failed"]
-    }
-} ,{timestamps:true})
+const paymentSchema = new mongoose.Schema(
+  {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Delivery" },
+    amount: { type: Number, required: true },
+    method: { type: String, enum: ["Razorpay"], default: "Razorpay" },
+    status: { type: String, enum: ["pending", "success", "failed"], default: "pending" },
+    razorpayOrderId: { type: String },
+    razorpayPaymentId: { type: String },
+    createdAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
 
-
-const Payment = mongoose.model("Payment" , paymentSchema)
-module.exports = Payment
+module.exports = mongoose.model("Payment", paymentSchema);

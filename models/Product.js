@@ -18,21 +18,21 @@ const productSchema = new mongoose.Schema({
         min:0
     },
     imagesUrl:{
-        type:String,
+        type:[String],
         required:true
     },
     size:{
-        type:String,
+        type:[String],
         required:true,
         enum:['s' , 'm' , 'l','xl' , '2xl']
     },
     category:{
-        type:String,
+        type:[String],
         required:true,
         enum:[ 'Men' , 'Women' ,'Kids']
     },
     subcategory:{
-        type:String,
+        type:[String],
         required:true,
         enum:['Topwear' ,'Bottomwear' ,'Winterwear']
     },
@@ -43,7 +43,7 @@ const productSchema = new mongoose.Schema({
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "admin",
+        ref: "Admin",
 
     }
 },{timestamps: true})
