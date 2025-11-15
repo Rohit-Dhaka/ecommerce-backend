@@ -17,7 +17,7 @@ export async function createAddress(req, res) {
       streetAddress,
     } = req.body;
 
-    // Validate required fields
+    
     if (
       !firstName ||
       !lastName ||
@@ -32,7 +32,7 @@ export async function createAddress(req, res) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Save the address
+    
     const newAddress = new Address({
       userId,
       firstName,

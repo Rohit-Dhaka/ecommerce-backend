@@ -2,9 +2,7 @@ import Delivery from "../models/Delivery.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
 
-// --------------------------------------------
-// Create Address / Delivery Entry
-// --------------------------------------------
+
 async function createAddress(req, res) {
   try {
     const userId = req.user.id;
@@ -21,7 +19,7 @@ async function createAddress(req, res) {
       streetAddress,
     } = req.body;
 
-    // Validate fields
+    
     if (
       !firstName ||
       !lastName ||
@@ -36,7 +34,7 @@ async function createAddress(req, res) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Save address
+    
     const newAddress = new Delivery({
       userId,
       firstName,
@@ -53,7 +51,7 @@ async function createAddress(req, res) {
     await newAddress.save();
 
     return res.status(201).json({
-      message: "✅ Address saved successfully",
+      message: "Address saved successfully",
       address: newAddress,
     });
   } catch (error) {
@@ -64,9 +62,7 @@ async function createAddress(req, res) {
   }
 }
 
-// --------------------------------------------
-// Admin: Get all orders
-// --------------------------------------------
+
 async function getAllOrders(req, res) {
   try {
     const orders = await Delivery.find()
@@ -84,9 +80,6 @@ async function getAllOrders(req, res) {
   }
 }
 
-// --------------------------------------------
-// User: Get only logged-in user's orders
-// --------------------------------------------
 async function getUserOrders(req, res) {
   try {
     const userId = req.user.id;
@@ -113,9 +106,7 @@ async function getUserOrders(req, res) {
   }
 }
 
-// --------------------------------------------
-// Export as OBJECT (You requested this format)
-// --------------------------------------------
+
 export  {
   createAddress,
   getAllOrders,

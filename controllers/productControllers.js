@@ -22,7 +22,7 @@ async function addproduct(req, res) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Image Upload
+    
     const results = [];
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: "No files uploaded" });
@@ -35,7 +35,7 @@ async function addproduct(req, res) {
 
       results.push(uploaded.secure_url);
 
-      // Delete local file
+      
       await fs.promises.unlink(file.path);
     }
 

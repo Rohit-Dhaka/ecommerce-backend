@@ -9,7 +9,7 @@ import {
   verifyPayment
 } from "../controllers/paymetControllers.js";
 import authmiddleware from "../middleware/auth.middleware.js";
-import razorpay from "../config/razorpay.js";   // FIXED: ESM import
+import razorpay from "../config/razorpay.js";  
 
 const deliveryRoutes = express.Router();
 
@@ -18,7 +18,7 @@ deliveryRoutes.post("/getuserOrders", authmiddleware, getUserOrders);
 deliveryRoutes.post("/addpayment", authmiddleware, createRazorpayOrder);
 deliveryRoutes.post("/verifypayment", authmiddleware, verifyPayment);
 
-// Razorpay test route (ESM friendly)
+
 deliveryRoutes.get("/test-razorpay", (req, res) => {
   if (razorpay) {
     res.json({

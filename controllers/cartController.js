@@ -7,20 +7,20 @@ async function addToCart(req, res) {
     const productId = req.params.id;
     const { size, quantity } = req.body;
 
-    // Product exists?
+    
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Size valid?
+    
     if (!product.size.includes(size)) {
       return res
         .status(400)
         .json({ message: "Selected size is not available for this product" });
     }
 
-    // Check existing cart item
+    
     let cartItem = await Cart.findOne({ userId, productId, size });
 
     if (cartItem) {

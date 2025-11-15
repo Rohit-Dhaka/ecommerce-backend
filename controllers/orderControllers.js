@@ -2,7 +2,7 @@ import Order from "../models/Order.js";
 
 async function getOrder(req, res) {
   try {
-    const userId = req.user.id; // logged-in user's ID
+    const userId = req.user.id; 
 
     const orders = await Order.find({ userId });
 

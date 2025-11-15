@@ -13,16 +13,14 @@ async function createRazorpayOrder(req, res) {
       return res.status(400).json({ message: "Amount is required" });
     }
 
-    // -----------------------------------------
-    // 1. Get user's cart items
-    // -----------------------------------------
+  
     const cartItems = await Cart.find({ userId }).populate("productId");
 
     if (!cartItems.length) {
       return res.status(400).json({ message: "Cart is empty" });
     }
 
-    // Convert cart items → order items format
+    
     const formattedItems = cartItems.map(item => ({
       productId: item.productId._id,
       name: item.productId.title,
@@ -31,9 +29,7 @@ async function createRazorpayOrder(req, res) {
       image: item.productId.imagesUrl[0] || null, 
     }));
 
-    // -----------------------------------------
-    // 2. Create Razorpay order
-    // -----------------------------------------
+
     const options = {
       amount: total * 100,
       currency: "INR",
@@ -42,9 +38,7 @@ async function createRazorpayOrder(req, res) {
 
     const razorpayOrder = await razorpay.orders.create(options);
 
-    // -----------------------------------------
-    // 3. Save Payment to DB
-    // -----------------------------------------
+  
     const payment = new Payment({
       userId,
       amount: total,
@@ -55,9 +49,7 @@ async function createRazorpayOrder(req, res) {
 
     await payment.save();
 
-    // -----------------------------------------
-    // 4. Save Order with Items
-    // -----------------------------------------
+  
     const order = new Order({
       userId,
       items: formattedItems,
@@ -92,12 +84,12 @@ async function verifyPayment(req, res) {
       return res.status(404).json({ message: "Payment not found" });
     }
 
-    // Update payment status
+    
     payment.razorpayPaymentId = razorpayPaymentId;
     payment.status = "success";
     await payment.save();
 
-    // If linked to delivery order → update status
+    
     if (payment.orderId) {
       await Delivery.findByIdAndUpdate(payment.orderId, {
         paid: true,

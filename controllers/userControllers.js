@@ -2,9 +2,6 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import generateToken from "../utils/generateToken.js";
 
-// -------------------------------------------
-// User Signup
-// -------------------------------------------
 async function signup(req, res) {
   try {
     const { name, email, password } = req.body;
@@ -31,9 +28,7 @@ async function signup(req, res) {
   }
 }
 
-// -------------------------------------------
-// User Login
-// -------------------------------------------
+
 async function login(req, res) {
   try {
     const { email, password } = req.body;
@@ -67,9 +62,7 @@ async function login(req, res) {
   }
 }
 
-// -------------------------------------------
-// Get Logged-in User
-// -------------------------------------------
+
 async function getUser(req, res) {
   try {
     const userId = req.user.id;
@@ -92,9 +85,6 @@ async function getUser(req, res) {
   }
 }
 
-// -------------------------------------------
-// EXPORT AS OBJECT
-// -------------------------------------------
 export  {
   signup,
   login,
