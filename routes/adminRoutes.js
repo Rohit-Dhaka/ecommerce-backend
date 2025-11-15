@@ -1,12 +1,9 @@
-const express = require('express')
-const adminRoutes = express.Router()
-const {adminSignup  , adminLogin} = require('../controllers/adminAuthController.js')
+import express from "express";
+import { adminSignup, adminLogin } from "../controllers/adminAuthController.js";
 
+const adminRoutes = express.Router();
 
+adminRoutes.post("/signup", adminSignup);
+adminRoutes.post("/login", adminLogin);
 
-adminRoutes.post("/signup" , adminSignup)
-adminRoutes.post('/login' , adminLogin)
-
-
-
-module.exports = adminRoutes
+export default adminRoutes;

@@ -1,10 +1,10 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 
 const deliverySchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",  
+      ref: "User",
       required: true,
     },
     firstName: {
@@ -69,4 +69,6 @@ const deliverySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports =  mongoose.model("Delivery", deliverySchema);
+const Delivery = mongoose.model("Delivery", deliverySchema);
+
+export default Delivery;

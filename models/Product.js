@@ -1,52 +1,55 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        required: true,
-        trim:true,
-        minlength:3
+const productSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 3,
     },
-    description:{
-        type:String,
-        required:true,
-        trim: true,        
+    description: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    price:{
-        type:Number,
-        required:true,
-        min:0
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
     },
-    imagesUrl:{
-        type:[String],
-        required:true
+    imagesUrl: {
+      type: [String],
+      required: true,
     },
-    size:{
-        type:[String],
-        required:true,
-        enum:['s' , 'm' , 'l','xl' , '2xl']
+    size: {
+      type: [String],
+      required: true,
+      enum: ["s", "m", "l", "xl", "2xl"],
     },
-    category:{
-        type:[String],
-        required:true,
-        enum:[ 'Men' , 'Women' ,'Kids']
+    category: {
+      type: [String],
+      required: true,
+      enum: ["Men", "Women", "Kids"],
     },
-    subcategory:{
-        type:[String],
-        required:true,
-        enum:['Topwear' ,'Bottomwear' ,'Winterwear']
+    subcategory: {
+      type: [String],
+      required: true,
+      enum: ["Topwear", "Bottomwear", "Winterwear"],
     },
-    stock:{
-        type:Number,
-        required:true,
-        min:0
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Admin",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
+    },
+  },
+  { timestamps: true }
+);
 
-    }
-},{timestamps: true})
+const Product = mongoose.model("Product", productSchema);
 
-const Product = mongoose.model("Product" , productSchema)
-module.exports = Product
+export default Product;

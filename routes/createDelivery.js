@@ -1,16 +1,21 @@
-const express = require('express')
-const deliveryRoutes = express.Router()
-const {createAddress  , getAllOrders  , getUserOrders} = require('../controllers/deliveryControllers')
-const {createRazorpayOrder ,verifyPayment} = require('../controllers/paymetControllers.js')
-const authmiddleware = require('../middleware/auth.middleware')
+import express from "express";
+import {
+  createAddress,
+  getAllOrders,
+  getUserOrders
+} from "../controllers/deliveryControllers.js";
+import {
+  createRazorpayOrder,
+  verifyPayment
+} from "../controllers/paymetControllers.js";
+import authmiddleware from "../middleware/auth.middleware.js";
 
+const deliveryRoutes = express.Router();
 
-deliveryRoutes.post("/createaddress" ,  authmiddleware ,  createAddress)
-deliveryRoutes.post("/getuserOrders" ,  authmiddleware ,  getUserOrders)
-deliveryRoutes.post("/addpayment" ,  authmiddleware ,  createRazorpayOrder)
+deliveryRoutes.post("/createaddress", authmiddleware, createAddress);
+deliveryRoutes.post("/getuserOrders", authmiddleware, getUserOrders);
+deliveryRoutes.post("/addpayment", authmiddleware, createRazorpayOrder);
+// If verifyPayment is needed, add route:
+// deliveryRoutes.post("/verify", authmiddleware, verifyPayment);
 
-
-module.exports = deliveryRoutes
-
-
-
+export default deliveryRoutes;

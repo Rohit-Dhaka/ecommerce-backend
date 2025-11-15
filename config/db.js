@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
+import mongoose from 'mongoose'
+import dotenv  from 'dotenv'
 dotenv.config();
 
 
@@ -15,4 +15,4 @@ dotenv.config();
     }
 }
 
-module.exports = ConnectDB
+export default ConnectDB

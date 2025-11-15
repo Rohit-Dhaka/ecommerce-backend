@@ -1,25 +1,26 @@
-const Cart = require("../models/Cart");
-const Product = require("../models/Product");
-
+import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
 
 async function addToCart(req, res) {
   try {
-    const userId = req.user.id;  // middleware se userId aa raha hai
-    const productId = req.params.id; // URL params se productId le rahe ho
+    const userId = req.user.id;
+    const productId = req.params.id;
     const { size, quantity } = req.body;
 
-    // 1. Product check
+    // Product exists?
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // 2. Size validation
+    // Size valid?
     if (!product.size.includes(size)) {
-      return res.status(400).json({ message: "Selected size is not available for this product" });
+      return res
+        .status(400)
+        .json({ message: "Selected size is not available for this product" });
     }
 
-    // 3. Agar same product + size cart me hai
+    // Check existing cart item
     let cartItem = await Cart.findOne({ userId, productId, size });
 
     if (cartItem) {
@@ -31,26 +32,24 @@ async function addToCart(req, res) {
         userId,
         productId,
         size,
-        quantity: quantity || 1
+        quantity: quantity || 1,
       });
       await newCartItem.save();
-      return res.status(201).json({ message: "Product added to cart", newCartItem });
+      return res
+        .status(201)
+        .json({ message: "Product added to cart", newCartItem });
     }
   } catch (error) {
     console.log("Add to cart error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
-};
-
-
+}
 
 async function getCart(req, res) {
   try {
-    const userId = req.user.id; // ✅ from auth middleware
+    const userId = req.user.id;
 
-    const cart = await Cart.find({ userId })
-      .populate("productId") // ✅ populate product details
-      .exec();
+    const cart = await Cart.find({ userId }).populate("productId").exec();
 
     if (!cart || cart.length === 0) {
       return res.status(200).json({ message: "Cart is empty", cart: [] });
@@ -61,14 +60,12 @@ async function getCart(req, res) {
     console.error("Get cart error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
-};
-
-
+}
 
 async function removeFromCart(req, res) {
   try {
     const userId = req.user.id;
-    const {productId  } = req.params; // ✅ params se le rahe hain
+    const { productId } = req.params;
 
     const deletedItem = await Cart.findOneAndDelete({ userId, productId });
 
@@ -81,19 +78,21 @@ async function removeFromCart(req, res) {
     console.error("Remove from cart error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
-};
+}
 
-
-async function getCartTotal (req, res){
+async function getCartTotal(req, res) {
   try {
-    const userId = req.user.id;    
-    const cartItems = await Cart.find({ userId }).populate("productId");       
+    const userId = req.user.id;
+    const cartItems = await Cart.find({ userId }).populate("productId");
+
     const subtotal = cartItems.reduce((sum, item) => {
       return sum + item.productId.price * item.quantity;
-    }, 0);    
+    }, 0);
+
     const shipping = subtotal > 0 ? 10 : 0;
     const total = subtotal + shipping;
-    return res.status(200).json({      
+
+    return res.status(200).json({
       subtotal,
       shipping,
       total,
@@ -102,18 +101,24 @@ async function getCartTotal (req, res){
     console.error("Get cart total error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
-};
+}
 
 async function cartLength(req, res) {
   try {
-    const userId = req.user.id;    
-    const cartItems = await Cart.find({ userId }).populate("productId");        
-    res.status(200).json({length: cartItems.length,});
+    const userId = req.user.id;
+    const cartItems = await Cart.find({ userId });
+
+    res.status(200).json({ length: cartItems.length });
   } catch (error) {
     console.log("Cart length error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
-
-module.exports = {addToCart ,  removeFromCart , getCart ,getCartTotal  ,cartLength }
+export  {
+  addToCart,
+  removeFromCart,
+  getCart,
+  getCartTotal,
+  cartLength,
+};

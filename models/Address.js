@@ -1,5 +1,4 @@
-
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema(
   {
@@ -17,7 +16,7 @@ const addressSchema = new mongoose.Schema(
     state: { type: String, required: true },
     zip: { type: String, required: true },
     country: { type: String, required: true },
-    isDefault: { type: Boolean, default: false }, // Optional: mark default address
+    isDefault: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -25,4 +24,5 @@ const addressSchema = new mongoose.Schema(
 );
 
 const Address = mongoose.model("Address", addressSchema);
-module.exports = Address
+
+export default Address;

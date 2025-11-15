@@ -1,10 +1,14 @@
-const Delivery = require("../models/Delivery.js");
-const Cart = require("../models/Cart.js");
-const Product = require("../models/Product.js");
+import Delivery from "../models/Delivery.js";
+import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
 
+// --------------------------------------------
+// Create Address / Delivery Entry
+// --------------------------------------------
 async function createAddress(req, res) {
   try {
     const userId = req.user.id;
+
     const {
       firstName,
       lastName,
@@ -17,7 +21,7 @@ async function createAddress(req, res) {
       streetAddress,
     } = req.body;
 
-    // Validate required fields
+    // Validate fields
     if (
       !firstName ||
       !lastName ||
@@ -32,7 +36,7 @@ async function createAddress(req, res) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Save the address only
+    // Save address
     const newAddress = new Delivery({
       userId,
       firstName,
@@ -48,57 +52,72 @@ async function createAddress(req, res) {
 
     await newAddress.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "✅ Address saved successfully",
       address: newAddress,
     });
   } catch (error) {
     console.error("Error saving address:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 }
 
-
-
-
-async function getAllOrders (req, res) {
+// --------------------------------------------
+// Admin: Get all orders
+// --------------------------------------------
+async function getAllOrders(req, res) {
   try {
     const orders = await Delivery.find()
-      .populate("userId", "name email")   // user की info भी दिखा सकते हो
-      .populate("cartItems.productId", "title price"); // product की info
+      .populate("userId", "name email")
+      .populate("cartItems.productId", "title price");
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       count: orders.length,
       orders,
     });
   } catch (error) {
     console.error("Error fetching orders:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: "Server error" });
   }
-};
+}
 
-// ✅ Get orders by User ID
-async function getUserOrders (req, res)  {
+// --------------------------------------------
+// User: Get only logged-in user's orders
+// --------------------------------------------
+async function getUserOrders(req, res) {
   try {
-     const userId = req.user.id;
+    const userId = req.user.id;
 
-    const orders = await Delivery.find({ userId })
-      .populate("cartItems.productId", "title price");
+    const orders = await Delivery.find({ userId }).populate(
+      "cartItems.productId",
+      "title price"
+    );
 
     if (!orders.length) {
-      return res.status(404).json({ success: false, message: "No orders found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       count: orders.length,
       orders,
     });
   } catch (error) {
     console.error("Error fetching user orders:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: "Server error" });
   }
-};
+}
 
-module.exports = { createAddress  ,getAllOrders  , getUserOrders };
+// --------------------------------------------
+// Export as OBJECT (You requested this format)
+// --------------------------------------------
+export  {
+  createAddress,
+  getAllOrders,
+  getUserOrders,
+};

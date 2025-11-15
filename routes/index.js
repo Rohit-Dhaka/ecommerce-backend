@@ -1,19 +1,20 @@
-const express = require('express')
-const router = express.Router()
-const authRoutes = require('./authRoutes.js')
-const adminRoutes = require('./adminRoutes.js')
-const productRoutes = require('./productRoutes.js')
-const deliveryRoutes = require('./createDelivery.js')
-const cartRoutes = require('./cartRoutes.js')
-const addressRotes = require('./addressRoutes.js')
+import express from "express";
+import authRoutes from "./authRoutes.js";
+import adminRoutes from "./adminRoutes.js";
+import productRoutes from "./productRoutes.js";
+import cartRoutes from "./cartRoutes.js";
+import addressRoutes from "./addressRoutes.js";
+import deliveryRoutes from "./deliveryRoutes.js";
+import orderRoutes from './orderRoutes.js'
 
+const router = express.Router();
 
-router.use('/auth' , authRoutes)
-router.use('/admin' , adminRoutes)
-router.use('/products' , productRoutes)
-router.use('/cart' , cartRoutes)
-router.use('/delivery' , deliveryRoutes)
-router.use('/address' , addressRotes)
+router.use("/auth", authRoutes);
+router.use("/admin", adminRoutes);
+router.use("/products", productRoutes);
+router.use("/cart", cartRoutes);
+router.use("/address", addressRoutes);
+router.use("/delivery", deliveryRoutes);
+router.use("/order", orderRoutes);
 
-
-module.exports = router
+export default router;

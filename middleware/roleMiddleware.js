@@ -1,16 +1,17 @@
-// roleMiddleware.js
 const roleMiddleware = (...allowedRoles) => {
-    return (req, res, next) => {
-        if (!req.user) {
-            return res.status(401).json({ message: "Not authenticated" });
-        }
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
 
-        if (!allowedRoles.includes(req.user.role)) {
-            return res.status(403).json({ message: "Access denied: insufficient permissions" });
-        }
+    if (!allowedRoles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ message: "Access denied: insufficient permissions" });
+    }
 
-        next();
-    };
+    next();
+  };
 };
 
-module.exports = roleMiddleware;
+export default roleMiddleware;

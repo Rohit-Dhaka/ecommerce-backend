@@ -1,10 +1,9 @@
-const express = require('express')
-const addressRotes = express.Router()
-const {createAddress} = require('../controllers/addressController.js')
-const authmiddleware = require('../middleware/auth.middleware.js')
+import express from "express";
+import { createAddress } from "../controllers/addressController.js";
+import authmiddleware from "../middleware/auth.middleware.js";
 
+const addressRoutes = express.Router();
 
-addressRotes.post('/addaddress' , authmiddleware ,  createAddress)
+addressRoutes.post("/addaddress", authmiddleware, createAddress);
 
-
-module.exports  = addressRotes
+export default addressRoutes;

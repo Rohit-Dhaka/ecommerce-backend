@@ -1,21 +1,28 @@
-const express = require("express")
-const app = express()
-const cors = require('cors')
-const dotenv = require('dotenv')
-dotenv.config()
-const PORT = process.env.PORT || 3000
-const ConnectDB = require('./config/db.js')
-const router = require('./routes/index.js')
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import ConnectDB from "./config/db.js";
+import router from "./routes/index.js";
 
+// Load environment variables
+dotenv.config();
 
-app.use(express.json())
-app.use(cors())
-app.use('/api/v1' , router)
+const app = express();
 
+// PORT is NOT imported. You read it directly:
+const PORT = process.env.PORT || 3000;
 
+// Middlewares
+app.use(express.json());
+app.use(cors());
 
+// Routes
+app.use("/api/v1", router);
 
-ConnectDB()
-app.listen(PORT , () =>{
-    console.log(`app listening on port ${PORT}`)
-})
+// Connect Database
+ConnectDB();
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+});
