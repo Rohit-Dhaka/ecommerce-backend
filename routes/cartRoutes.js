@@ -5,6 +5,7 @@ import {
   getCart,
   getCartTotal,
   cartLength,
+  updateCart
 } from "../controllers/cartController.js";
 import authmiddleware from "../middleware/auth.middleware.js";
 
@@ -15,5 +16,6 @@ cartRoutes.get("/getcart", authmiddleware, getCart);
 cartRoutes.delete("/removecart/:productId", authmiddleware, removeFromCart);
 cartRoutes.get("/total", authmiddleware, getCartTotal);
 cartRoutes.get("/cartlength", authmiddleware, cartLength);
+cartRoutes.put("/cartupdate/:productId", authmiddleware, updateCart);
 
 export default cartRoutes;

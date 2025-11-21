@@ -62,6 +62,50 @@ async function getCart(req, res) {
   }
 }
 
+// UPDATE cart quantity (increment / decrement)
+async function updateCart(req, res) {
+  try {
+    const userId = req.user.id;        // user ID from auth middleware
+    const { productId } = req.params;  // product ID from URL
+    const { action } = req.body;       // "inc" or "dec"
+
+    // Find cart item
+    const cartItem = await Cart.findOne({ userId, productId });
+
+    if (!cartItem) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
+
+    // Increment
+    if (action === "inc") {
+      cartItem.quantity += 1;
+    }
+
+    // Decrement
+    else if (action === "dec") {
+      if (cartItem.quantity > 1) {
+        cartItem.quantity -= 1;
+      } else {
+        // If quantity becomes 0 → remove item from cart
+        await Cart.findOneAndDelete({ userId, productId });
+        return res.status(200).json({ message: "Product removed from cart" });
+      }
+    }
+
+    await cartItem.save();
+
+    return res.status(200).json({
+      message: "Cart updated successfully",
+      quantity: cartItem.quantity,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
 async function removeFromCart(req, res) {
   try {
     const userId = req.user.id;
@@ -121,4 +165,5 @@ export  {
   getCart,
   getCartTotal,
   cartLength,
+  updateCart
 };

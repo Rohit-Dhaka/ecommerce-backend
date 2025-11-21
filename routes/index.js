@@ -6,6 +6,7 @@ import cartRoutes from "./cartRoutes.js";
 import addressRoutes from "./addressRoutes.js";
 import deliveryRoutes from "./deliveryRoutes.js";
 import orderRoutes from './orderRoutes.js'
+import subscribRoutes from './subscrib.js'
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use("/cart", cartRoutes);
 router.use("/address", addressRoutes);
 router.use("/delivery", deliveryRoutes);
 router.use("/order", orderRoutes);
+router.use("/subscrib", subscribRoutes);
 
 export default router;
