@@ -88,7 +88,7 @@ async function getUser(req, res) {
 
 async function getAllUsers(req, res) {
   try {
-    const users = await User.find().select("-password"); // remove passwords
+    const users = await User.find().select("-password"); 
 
     if (!users || users.length === 0) {
       return res.status(404).json({

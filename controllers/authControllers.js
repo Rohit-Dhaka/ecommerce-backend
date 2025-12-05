@@ -20,7 +20,7 @@ async function usersignup(req, res) {
       .status(201)
       .json({ message: "User signup successfully", newuser });
   } catch (error) {
-    console.log(error);
+    
     return res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -40,7 +40,7 @@ async function adminsignup(req, res) {
       .status(201)
       .json({ message: "Admin signup successfully", newuser });
   } catch (error) {
-    console.log(error);
+    
     return res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -79,7 +79,7 @@ async function login(req, res) {
       },
     });
   } catch (error) {
-    console.log(error);
+    
     return res.status(500).json({ error: "Internal server error" });
   }
 }

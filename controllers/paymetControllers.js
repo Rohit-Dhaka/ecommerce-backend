@@ -5,40 +5,26 @@ import Order from "../models/Order.js";
 import Cart from '../models/Cart.js'
 
 async function createRazorpayOrder(req, res) {
-  try {
-    const { total } = req.body;
+ try {
+    const { total, productId, name, price, quantity, image } = req.body;
     const userId = req.user.id;
 
+    
     if (!total) {
-      return res.status(400).json({ message: "Amount is required" });
+      return res.status(400).json({ message: "Total amount is required" });
     }
-
-  
-    const cartItems = await Cart.find({ userId }).populate("productId");
-
-    if (!cartItems.length) {
-      return res.status(400).json({ message: "Cart is empty" });
+    if (!productId || !name || !price || !quantity) {
+      return res.status(400).json({ message: "Product details are missing" });
     }
 
     
-    const formattedItems = cartItems.map(item => ({
-      productId: item.productId._id,
-      name: item.productId.title,
-      price: item.productId.price,
-      quantity: item.quantity,
-      image: item.productId.imagesUrl[0] || null, 
-    }));
-
-
-    const options = {
-      amount: total * 100,
+    const razorpayOrder = await razorpay.orders.create({
+      amount: total,     // already in paise
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
-    };
+    });
 
-    const razorpayOrder = await razorpay.orders.create(options);
-
-  
+    // 3️⃣ Save Payment Info in DB
     const payment = new Payment({
       userId,
       amount: total,
@@ -46,31 +32,41 @@ async function createRazorpayOrder(req, res) {
       status: "pending",
       razorpayOrderId: razorpayOrder.id,
     });
-
     await payment.save();
 
-  
+    // 4️⃣ Save Order Info (Single Product)
     const order = new Order({
       userId,
-      items: formattedItems,
-      amount: total,
+      items: [
+        {
+          productId,
+          name,
+          price,
+          quantity,
+          image,
+        },
+      ],
+      amount: total / 100, 
       paymentId: payment._id,
       orderId: razorpayOrder.id,
       status: "pending",
     });
-
     await order.save();
 
+    // 5️⃣ Response to Frontend
     return res.status(201).json({
       message: "Razorpay order created successfully",
-      paymentorder: razorpayOrder,
+      razorpayOrder,
       order,
       paymentId: payment._id,
     });
 
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
-    return res.status(500).json({ message: "Server error", error: error.message });
+    return res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 }
 

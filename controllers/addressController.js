@@ -3,7 +3,7 @@ import Address from "../models/Address.js";
 export async function createAddress(req, res) {
   try {
     const userId = req.user.id;
-    console.log(userId);
+    
 
     const {
       firstName,

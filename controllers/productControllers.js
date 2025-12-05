@@ -6,9 +6,7 @@ async function addproduct(req, res) {
   try {
     const { title, description, price, size, category, subcategory, stock } =
       req.body;
-
-    console.log(title, description, price, size, category, subcategory, stock);
-    console.log(req.files);
+;
 
     if (
       !title ||

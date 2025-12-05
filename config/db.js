@@ -7,6 +7,7 @@ dotenv.config();
     try{
         await mongoose.connect(process.env.MONGODB_URL).then(() =>{
             console.log("App connect to database")
+            console.log(process.env.MONGODB_URL)
         })
 
     }

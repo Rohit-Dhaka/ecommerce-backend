@@ -34,7 +34,7 @@ async function updateOrder(req, res) {
       "Cancelled"
     ];
 
-    // Validate status
+    
     if (!validStatus.includes(status)) {
       return res.status(400).json({ 
         message: "Invalid order status",
@@ -42,7 +42,7 @@ async function updateOrder(req, res) {
       });
     }
 
-    // Update order
+    
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { status },
@@ -63,7 +63,7 @@ async function updateOrder(req, res) {
     return res.status(500).json({ error: "Internal server error" });
   }
 }
-// GET ALL ORDERS (Admin)
+
 async function getAllOrders(req, res) {
   try {
     const orders = await Order.find()
