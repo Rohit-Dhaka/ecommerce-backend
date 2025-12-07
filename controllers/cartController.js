@@ -62,7 +62,6 @@ async function getCart(req, res) {
   }
 }
 
-
 async function updateCart(req, res) {
   try {
     const userId = req.user.id;        
@@ -82,17 +81,17 @@ async function updateCart(req, res) {
     }
 
   
-    else if (action === "dec") {
-      if (cartItem.quantity > 1) {
-        cartItem.quantity -= 1;
-      } else {
-        
-        await Cart.findOneAndDelete({ userId, productId });
-        return res.status(200).json({ message: "Product removed from cart" });
-      }
-    }
+  else if (action === "dec") {
+  if (cartItem.quantity > 1) {
+    cartItem.quantity -= 1;
+  } else {
+    cartItem.quantity = 1; // Prevent going below 1
+  }
+}
+
 
     await cartItem.save();
+    
 
     return res.status(200).json({
       message: "Cart updated successfully",
